@@ -11,13 +11,15 @@ services:
     volumes:
       - open-webui:/app/backend/data
     ports:
-      - '44444:8080'
+      - :3000
+      - :8080
     environment:
       - OLLAMA_BASE_URL=${OLLAMA_BASE_URL}
       - WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY}
       - SCARF_NO_ANALYTICS=${SCARF_NO_ANALYTICS:-true}
       - DO_NOT_TRACK=${DO_NOT_TRACK:-true}
       - ANONYMIZED_TELEMETRY=${ANONYMIZED_TELEMETRY:-false}
+      - USE_OLLAMA_DOCKER=${USE_OLLAMA_DOCKER:-false}
     restart: unless-stopped
 
   pipelines:
