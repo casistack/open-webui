@@ -20,6 +20,9 @@ services:
       DO_NOT_TRACK: ${DO_NOT_TRACK:-true}
       ANONYMIZED_TELEMETRY: ${ANONYMIZED_TELEMETRY:-false}
       USE_OLLAMA_DOCKER: ${USE_OLLAMA_DOCKER:-false}
+      WEB_LOADER_ENGINE: ${WEB_LOADER_ENGINE:-playwright}
+      PLAYWRIGHT_WS_URL: ${PLAYWRIGHT_WS_URL:-ws://playwright:3000}
+
     restart: unless-stopped
 
   pipelines:
@@ -30,6 +33,10 @@ services:
     ports:
       - :9099
     restart: always
+  playwright:
+    image: mcr.microsoft.com/playwright:v1.49.1-noble # Version must match requirements.txt
+    container_name: playwright
+    command: npx -y playwright@1.49.1 run-server --port 3000 --host 0.0.0.0
 
 volumes:
   open-webui-data:
