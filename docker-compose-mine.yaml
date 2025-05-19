@@ -5,6 +5,7 @@ services:
       context: .
       args:
         OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://localhost:11434}
+        BUILD_HASH: ${BUILD_HASH:-dev-build-coolify}
       dockerfile: Dockerfile
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
     container_name: open-webui

@@ -18,7 +18,14 @@ const config = {
 		}),
 		// poll for new version name every 60 seconds (to trigger reload mechanic in +layout.svelte)
 		version: {
-			name: child_process.execSync('git rev-parse HEAD').toString().trim(),
+			name: (() => {
+				try {
+					return child_process.execSync('git rev-parse HEAD').toString().trim();
+				} catch (e) {
+					console.warn('Git repository not found. Using fallback version.');
+					return process.env.APP_BUILD_HASH || 'dev-build';
+				}
+			})(),
 			pollInterval: 60000
 		}
 	},
