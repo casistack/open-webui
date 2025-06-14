@@ -22,15 +22,20 @@ const config = {
 			name: (() => {
 				try {
 					return child_process.execSync('git rev-parse HEAD').toString().trim();
-				} catch {
-					// if git is not available, fallback to package.json version
-					// or current timestamp
+				} catch (e) {
+					console.warn('Git repository not found. Using fallback version.');
+					// First try environment variable (for Coolify/Docker builds)
+					if (process.env.APP_BUILD_HASH) {
+						return process.env.APP_BUILD_HASH;
+					}
+					// Then try package.json version (from main branch approach)
 					try {
 						return (
 							JSON.parse(fs.readFileSync(new URL('./package.json', import.meta.url), 'utf8'))
 								?.version || Date.now().toString()
 						);
 					} catch {
+						// Final fallback to timestamp
 						return Date.now().toString();
 					}
 				}

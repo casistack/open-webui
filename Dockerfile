@@ -34,6 +34,16 @@ RUN npm ci
 
 COPY . .
 ENV APP_BUILD_HASH=${BUILD_HASH}
+# Initialize a git repository if .git doesn't exist to prevent git commands from failing
+RUN if [ ! -d ".git" ]; then \
+    echo "Initializing empty git repo for build" && \
+    git init && \
+    git config --global user.email "build@example.com" && \
+    git config --global user.name "Build Process" && \
+    git add . && \
+    git commit -m "Initial commit for build" || true; \
+  fi
+ENV APP_BUILD_HASH=${BUILD_HASH}
 RUN npm run build
 
 ######## WebUI backend ########

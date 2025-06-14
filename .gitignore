@@ -307,3 +307,8 @@ dist
 cypress/videos
 cypress/screenshots
 .vscode/settings.json
+
+# Local merge and reset scripts - do not commit
+merge-main-local.sh
+reset-to-main-local.sh
+MERGE_SCRIPT_README.md
