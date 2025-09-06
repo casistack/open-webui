@@ -56,7 +56,7 @@ services:
     volumes:
       - pipelines-data:/app/pipelines
     ports:
-      - :9099
+      - ':9099'
     restart: always
   playwright:
     image: mcr.microsoft.com/playwright:v1.49.1-noble # Version must match requirements.txt
