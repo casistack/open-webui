@@ -25,7 +25,8 @@ services:
         OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://localhost:11434}
         BUILD_HASH: ${BUILD_HASH:-dev-build-coolify}
       dockerfile: Dockerfile
-    image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
+    # Commented out to force Coolify to build from Dockerfile instead of pulling pre-built image
+    # image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
     container_name: open-webui
     depends_on:
       postgres:
