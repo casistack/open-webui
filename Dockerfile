@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
 # Initialize device type args
 # use build args in the docker build command with --build-arg="BUILDARG=true"
+# Force rebuild for Coolify - 2025-12-22
 ARG USE_CUDA=false
 ARG USE_OLLAMA=false
 ARG USE_SLIM=false
