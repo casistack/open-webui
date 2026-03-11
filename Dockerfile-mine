@@ -25,9 +25,7 @@ RUN apk add --no-cache git
 
 COPY package.json package-lock.json ./
 
-# Use BuildKit cache for npm
-RUN --mount=type=cache,target=/root/.npm \
-    npm ci --force
+RUN npm ci --force
 
 COPY . .
 ENV APP_BUILD_HASH=${BUILD_HASH}
@@ -104,17 +102,15 @@ RUN apt-get update && \
 # Copy requirements first for better caching
 COPY --chown=$UID:$GID ./backend/requirements.txt ./requirements.txt
 
-# Install Python dependencies with BuildKit cache
+# Install Python dependencies (no cache mounts to avoid filling disk)
 # SKIP model downloads - they'll be downloaded on first use (much faster builds)
-RUN --mount=type=cache,target=/root/.cache/pip \
-    --mount=type=cache,target=/root/.cache/uv \
-    pip3 install uv && \
+RUN pip3 install --no-cache-dir uv && \
     if [ "$USE_CUDA" = "true" ]; then \
-    pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/$USE_CUDA_DOCKER_VER; \
+    pip3 install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/$USE_CUDA_DOCKER_VER; \
     else \
-    pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu; \
+    pip3 install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu; \
     fi && \
-    uv pip install --system -r requirements.txt
+    uv pip install --system --no-cache-dir -r requirements.txt
 
 # Install Ollama if requested
 RUN if [ "$USE_OLLAMA" = "true" ]; then \
